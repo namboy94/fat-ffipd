@@ -1,0 +1,88 @@
+stages:
+  - mirror
+  - test
+  - stats
+  - deploy
+  - release
+
+default:
+  image: namboy94/ci-docker-environment:0.3.0
+  before_script:
+    - echo "$SERVER_ACCESS_KEY" > ~/.ssh/id_rsa
+    - chmod 0600 ~/.ssh/id_rsa
+
+github_mirror:
+  stage: mirror
+  tags: [docker]
+  only: [master, develop]
+  before_script:
+    - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 0600 ~/.ssh/id_rsa
+  script:
+    - git-mirror-pusher git@github.com:@{GITHUB_USER}/@{PROJECT_NAME}.git
+      master develop
+
+stylecheck:
+  stage: test
+  tags: [docker]
+  script:
+    - python-codestyle-check
+
+unittest:
+  stage: test
+  tags: [docker]
+  only: [master, develop]
+  script:
+    - python-unittest
+
+gitstats:
+  stage: stats
+  tags: [docker]
+  script:
+    - gitstats-gen
+
+docgen:
+  stage: stats
+  tags: [docker]
+  script:
+    - pip install flask
+    - sphinx-docgen
+
+deploy_develop:
+  stage: deploy
+  only: [develop]
+  tags: [@{PROJECT_NAME}-develop]
+  before_script:
+    - python3 -m venv virtual
+    - source virtual/bin/activate
+    - pip install ci-scripts
+  script:
+    - export @{PROJECT_NAME}_ENV=develop
+    - deploy-flask $@{PROJECT_NAME}_DEVELOP_HOME
+
+deploy_production:
+  stage: deploy
+  only: [master]
+  tags: [@{PROJECT_NAME}]
+  before_script:
+    - python3 -m venv virtual
+    - source virtual/bin/activate
+    - pip install ci-scripts
+  script:
+    - export @{PROJECT_NAME}_ENV=production
+    - deploy-flask $@{PROJECT_NAME}_HOME
+
+release_upload:
+  stage: release
+  only: [master]
+  tags: [docker]
+  script:
+    - github-release-upload $(cat version) "$(changelog-reader)"
+    - gitlab-release-upload $(cat version) "$(changelog-reader)"
+
+pypi_upload:
+  stage: release
+  only: [master]
+  tags: [docker]
+  script:
+    - pypi-upload

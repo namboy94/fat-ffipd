@@ -1,0 +1,3 @@
+graft @{PROJECT_NAME}/templates
+graft @{PROJECT_NAME}/static
+include version
