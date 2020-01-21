@@ -26,6 +26,7 @@ secrets_file = os.path.join(
 )
 load_secrets(secrets_file)
 os.environ["PROJECT_ROOT_PATH"] = os.path.abspath(os.path.dirname(__file__))
+os.environ["FLASK_ENV"] = "develop"
 
-from @{PROJECT_NAME}.run import app as application
+from @{PACKAGE_NAME}.run import app
 app.run()

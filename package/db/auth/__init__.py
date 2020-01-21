@@ -16,15 +16,3 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with @{PROJECT_NAME}.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
-
-import os
-from @{PACKAGE_NAME}.utils.env import load_secrets
-
-
-secrets_file = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)), "secrets.json"
-)
-load_secrets(secrets_file)
-os.environ["PROJECT_ROOT_PATH"] = os.path.abspath(os.path.dirname(__file__))
-
-from @{PACKAGE_NAME}.run import app as application

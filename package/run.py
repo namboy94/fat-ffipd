@@ -18,9 +18,16 @@ along with @{PROJECT_NAME}.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import os
+import base64
 import logging
+from binascii import Error
+from typing import Optional
+from flask import render_template
 from flask.logging import default_handler
-from @{PACKAGE_NAME}.flask import app, db
+from werkzeug.exceptions import HTTPException
+from @{PACKAGE_NAME}.db.auth.User import User
+from @{PACKAGE_NAME}.db.models import create_tables
+from @{PACKAGE_NAME}.flask import app, db, login_manager
 from @{PACKAGE_NAME}.config import logging_path, db_user, db_key, db_name
 
 
@@ -41,10 +48,58 @@ def init():
         app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
         db.init_app(app)
 
-        # DB Model imports
+        create_tables(app, db)
 
-        with app.app_context():
-            db.create_all()
+        # Set up login manager
+        @login_manager.user_loader
+        def load_user(user_id: str) -> Optional[User]:
+            """
+            Loads a user from an ID
+            :param user_id: The ID
+            :return: The User
+            """
+            return User.query.get(int(user_id))
+
+        @login_manager.request_loader
+        def load_user_from_request(request) -> Optional[User]:
+            """
+            Loads a user pased on a provided API key
+            :param request: The request containing the API key in the headers
+            :return: The user or None if no valid API key was provided
+            """
+            if "Authorization" not in request.headers:
+                return None
+
+            api_key = request.headers["Authorization"].replace("Basic ", "", 1)
+
+            try:
+                api_key = base64.b64decode(
+                    api_key.encode("utf-8")
+                ).decode("utf-8")
+            except (TypeError, Error):
+                pass
+
+            db_api_key = ApiKey.query.get(api_key.split(":", 1)[0])
+
+            # Check for validity of API key
+            if db_api_key is None or not db_api_key.verify_key(api_key):
+                return None
+
+            elif db_api_key.has_expired():
+                db.session.delete(db_api_key)
+                db.session.commit()
+                return None
+
+            return User.query.get(db_api_key.user_id)
+
+        @app.errorhandler(HTTPException)
+        def error_handling(error: HTTPException):
+            """
+            Custom redirect for 401 errors
+            :param error: The error that caused the error handler to be called
+            :return: A redirect to the login page
+            """
+            return render_template("error.html", error=error)
 
         app.logger.removeHandler(default_handler)
 

@@ -20,7 +20,7 @@ LICENSE"""
 import os
 import json
 from typing import Optional
-from @{PACKAGE_NAME} import app
+from @{PACKAGE_NAME}.flask import app
 
 
 def resolve_env_variable(

@@ -18,7 +18,8 @@ along with @{PROJECT_NAME}.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from flask import Blueprint
-from @{package_name}.utils.decorators import api
+from flask_login import login_required
+from @{PACKAGE_NAME}.utils.decorators import api, api_login_required
 
 api_ping_blueprint = Blueprint("api_ping", __name__)
 
@@ -26,4 +27,12 @@ api_ping_blueprint = Blueprint("api_ping", __name__)
 @api_ping_blueprint.route("/api/v1/ping")
 @api
 def ping():
-    return "Pong"
+    return {"ANSWER": "PONG"}
+
+
+@api_ping_blueprint.route("/api/v1/auth_ping")
+@api_login_required
+@login_required
+@api
+def auth_ping():
+    return "AuthPong"

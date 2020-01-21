@@ -18,6 +18,7 @@ along with @{PROJECT_NAME}.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from flask import render_template, Blueprint
+from flask_login import login_required
 
 static_blueprint = Blueprint("static", __name__)
 
@@ -25,3 +26,9 @@ static_blueprint = Blueprint("static", __name__)
 @static_blueprint.route("/")
 def index():
     return render_template("index.html")
+
+
+@static_blueprint.route("/restricted")
+@login_required
+def restricted():
+    render_template("restricted.html")

@@ -17,14 +17,14 @@ You should have received a copy of the GNU General Public License
 along with @{PROJECT_NAME}.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import os
-from @{PACKAGE_NAME}.utils.env import load_secrets
+from flask import Flask
+from @{PACKAGE_NAME}.routes.static import static_blueprint
+from @{PACKAGE_NAME}.routes.api.ping import api_ping_blueprint
 
 
-secrets_file = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)), "secrets.json"
-)
-load_secrets(secrets_file)
-os.environ["PROJECT_ROOT_PATH"] = os.path.abspath(os.path.dirname(__file__))
-
-from @{PACKAGE_NAME}.run import app as application
+def register_blueprints(app: Flask):
+    for blueprint in [
+        static_blueprint,
+        api_ping_blueprint
+    ]:
+        app.register_blueprint(blueprint)

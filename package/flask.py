@@ -22,8 +22,7 @@ import pkg_resources
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from @{PACKAGE_NAME}.routes.static import static_blueprint
-from @{PACKAGE_NAME}.routes.api.ping import api_ping_blueprint
+from @{PACKAGE_NAME}.routes.blueprints import register_blueprints
 
 app = Flask(__name__)
 """
@@ -63,8 +62,7 @@ def configure():
             "env": app.env
         }
 
-    app.register_blueprint(static_blueprint)
-    app.register_blueprint(api_ping_blueprint)
+    register_blueprints(app)
 
 
 configure()

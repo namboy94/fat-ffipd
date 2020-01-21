@@ -40,7 +40,8 @@ if __name__ == "__main__":
         install_requires=[
             "flask",
             "flask_sqlalchemy",
-            "flask_login"
+            "flask_login",
+            "puffotter"
         ],
         include_package_data=True,
         zip_safe=False
