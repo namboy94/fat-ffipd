@@ -24,7 +24,7 @@ from setuptools import setup, find_packages
 if __name__ == "__main__":
 
     setup(
-        name="@{PROJECT_NAME}",
+        name="@{PACKAGE_NAME}",
         version=open("version", "r").read(),
         description="@{PROJECT_DESCRIPTION}",
         long_description=open("README.md", "r").read(),
@@ -38,7 +38,9 @@ if __name__ == "__main__":
         license="GNU GPL3",
         packages=find_packages(),
         install_requires=[
-            "flask"
+            "flask",
+            "flask_sqlalchemy",
+            "flask_login"
         ],
         include_package_data=True,
         zip_safe=False

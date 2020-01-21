@@ -18,7 +18,7 @@ along with @{PROJECT_NAME}.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import os
-from shutil import copytree
+from shutil import copytree, rmtree
 
 
 def replace_occurences(root: str, keyword: str, value: str):
@@ -28,8 +28,12 @@ def replace_occurences(root: str, keyword: str, value: str):
         if os.path.isdir(path):
             replace_occurences(path, keyword, value)
         elif os.path.isfile(path):
+            print(path)
             with open(path, "r") as f:
-                content = f.read()
+                try:
+                    content = f.read()
+                except UnicodeDecodeError:
+                    continue
             with open(path, "w") as f:
                 f.write(content.replace("@{" + keyword + "}", value))
 
@@ -37,6 +41,7 @@ def replace_occurences(root: str, keyword: str, value: str):
 def main():
     keywords = [
         "PROJECT_NAME",
+        "PACKAGE_NAME",
         "PROJECT_DESCRIPTION",
         "PROJECT_URL",
         "AUTHOR_NAME",
@@ -47,14 +52,25 @@ def main():
     ]
     print("Please enter the project details:")
     project_info = {x: input(x + ": ") for x in keywords}
-    copytree(".", "/tmp/" + project_info["PROJECT_NAME"])
-    os.rename(
-        "/tmp/" + project_info["PROJECT_NAME"],
-        project_info["PROJECT_NAME"]
-    )
+
+    temp_path = "/tmp/" + project_info["PROJECT_NAME"]
+    target_path = project_info["PROJECT_NAME"]
+
+    for path in [temp_path, target_path]:
+        if os.path.isdir(path):
+            rmtree(path)
+
+    copytree(".", temp_path)
+    copytree(temp_path, target_path)
 
     for keyword, value in project_info.items():
-        replace_occurences(project_info["PROJECT_NAME"], keyword, value)
+        replace_occurences(target_path, keyword, value)
+
+    os.rename(
+        os.path.join(target_path, "package"),
+        os.path.join(target_path, project_info["PACKAGE_NAME"])
+    )
+    rmtree(os.path.join(target_path, ".git"))
 
 
 if __name__ == "__main__":
