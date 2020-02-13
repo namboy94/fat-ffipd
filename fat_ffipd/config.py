@@ -18,6 +18,7 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import os
+import pkg_resources
 from typing import Optional
 
 
@@ -25,6 +26,13 @@ class Config:
     """
     Class that stores configuration data
     """
+
+    @property
+    def version(self) -> str:
+        """
+        :return: The version of the program
+        """
+        return pkg_resources.get_distribution("fat_ffipd").version
 
     @property
     def recaptcha_site_key(self) -> Optional[str]:
@@ -46,6 +54,9 @@ class Config:
         :return: The database URI to use in this application
         """
         db_mode = os.environ.get("DB_MODE", "sqlite")
+
+        if os.environ.get("FLASK_TESTING") or os.environ.get("TESTING"):
+            db_mode = "sqlite"
 
         if db_mode == "sqlite":
             return "sqlite:////tmp/fat_ffipd.db"
