@@ -62,16 +62,10 @@ deploy_develop:
   script:
     - docker build -f docker/Dockerfile -t fat-ffipd-dev . --no-cache
     - cp docker/docker-compose-dev.yml docker-compose.yml
-    - echo $ENV_FILE > .env
-    - echo '$ENV_FILE' > .env2
-    - echo "$ENV_FILE" > .env3
-    - cat .env
-    - echo "________________________"
-    - cat .env2
-    - echo "________________________"
-    - cat .env3
+    - echo "$ENV_FILE" > .env
     - docker-compose up -d --no-recreate
     - docker-compose up -d --no-deps fat-ffipd-dev-app
+    - rm .env
 
 deploy_production:
   stage: deploy
