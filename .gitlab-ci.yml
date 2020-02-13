@@ -57,7 +57,7 @@ docgen:
 deploy_develop:
   stage: deploy
   tags: [privileged]
-  only: [master]
+  only: [develop]
   before_script: []
   script:
     - docker build -t fat-ffipd-dev . --no-cache
