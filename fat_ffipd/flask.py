@@ -38,11 +38,11 @@ login_manager = LoginManager(app)
 The Flask-Login Login Manager
 """
 
+
 def configure():
 
     app.config["TRAP_HTTP_EXCEPTIONS"] = True
     login_manager.session_protection = "strong"
-
 
     if "FLASK_TESTING" in os.environ:
         app.testing = os.environ["FLASK_TESTING"] == "1"
@@ -60,6 +60,3 @@ def configure():
             "version": version,
             "env": app.env
         }
-
-
-configure()

@@ -6,7 +6,7 @@ stages:
   - release
 
 default:
-  image: namboy94/ci-docker-environment:0.3.0
+  image: namboy94/ci-docker-environment:0.8.0
   before_script:
     - echo "$SERVER_ACCESS_KEY" > ~/.ssh/id_rsa
     - chmod 0600 ~/.ssh/id_rsa
@@ -35,6 +35,12 @@ unittest:
   script:
     - python-unittest
 
+type_check:
+  stage: test
+  tags: [docker]
+  script:
+    - python-static-type-check
+
 gitstats:
   stage: stats
   tags: [docker]
@@ -52,25 +58,25 @@ deploy_develop:
   stage: deploy
   only: [develop]
   tags: [fat-ffipd-develop]
-  before_script:
-    - python3 -m venv virtual
-    - source virtual/bin/activate
-    - pip install ci-scripts
+  before_script: []
   script:
-    - export fat-ffipd_ENV=develop
-    - deploy-flask $fat-ffipd_DEVELOP_HOME
+    - docker build -t fat-ffipd-dev . --no-cache
+    - docker stop fat-ffipd-dev-instance ||true
+    - docker rm fat-ffipd-dev-instance ||true
+    - docker run -d --restart always -p 9001:80
+      --name fat-ffipd-dev-instance fat-ffipd-dev
 
 deploy_production:
   stage: deploy
   only: [master]
   tags: [fat-ffipd]
-  before_script:
-    - python3 -m venv virtual
-    - source virtual/bin/activate
-    - pip install ci-scripts
+  before_script: []
   script:
-    - export fat-ffipd_ENV=production
-    - deploy-flask $fat-ffipd_HOME
+    - docker build -t fat-ffipd-dev . --no-cache
+    - docker stop fat-ffipd-dev-instance ||true
+    - docker rm fat-ffipd-dev-instance ||true
+    - docker run -d --restart always -p 9001:80
+      --name fat-ffipd-dev-instance fat-ffipd-dev
 
 release_upload:
   stage: release
