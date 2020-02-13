@@ -18,55 +18,57 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import os
-from fat_ffipd.utils.env import resolve_env_variable
+from typing import Optional
 
-"""
-This file contains environment specific configuration information
-All of this information is found using environment variables
-"""
 
-recaptcha_site_key = resolve_env_variable("RECAPTCHA_SITE_KEY", nullable=True)
-"""
-The (public) recaptcha site key
-"""
+class Config:
+    """
+    Class that stores configuration data
+    """
 
-recaptcha_secret_key = resolve_env_variable("RECAPTCHA_SECRET_KEY",
-                                            nullable=True)
-"""
-The secret recaptcha key used to validate the recaptcha result
-"""
+    @property
+    def recaptcha_site_key(self) -> Optional[str]:
+        """
+        :return: The (public) recaptcha site key
+        """
+        return os.environ.get("RECAPTCHA_SITE_KEY")
 
-db_mode = resolve_env_variable("DB_MODE", default="sqlite")
-"""
-The database mode to use. Currently, options are mysql and sqlite
-"""
+    @property
+    def recaptcha_secret_key(self) -> Optional[str]:
+        """
+        :return: The secret recaptcha key used to validate the recaptcha result
+        """
+        return os.environ.get("RECAPTCHA_SECRET_KEY")
 
-db_host = resolve_env_variable("DB_HOST", default="localost")
-"""
-The database host
-"""
+    @property
+    def db_uri(self) -> str:
+        """
+        :return: The database URI to use in this application
+        """
+        db_mode = os.environ.get("DB_MODE", "sqlite")
 
-db_port = resolve_env_variable("DB_PORT", _type=int, default=3306)
-"""
-The database port
-"""
+        if db_mode == "sqlite":
+            return "sqlite:////tmp/fat_ffipd.db"
+        else:
+            prefix = db_mode.upper()
 
-db_user = resolve_env_variable("DB_USER", nullable=True)
-"""
-The database user
-"""
+            default_port = 3306
 
-db_name = resolve_env_variable("DB_NAME", nullable=True)
-"""
-The database name
-"""
+            return "{}://{}:{}@{}:{}/{}".format(
+                db_mode,
+                os.environ[prefix + "_USER"],
+                os.environ[prefix + "_PASSWORD"],
+                os.environ.get(prefix + "_HOST", "localhost"),
+                os.environ.get(prefix + "_PORT", default_port),
+                os.environ[prefix + "_DATABASE"],
+            )
 
-db_key = resolve_env_variable("DB_KEY", nullable=True)
-"""
-The database key
-"""
-
-logging_path = os.path.join(
-    str(resolve_env_variable("PROJECT_ROOT_PATH", default="/tmp")),
-    "fat_ffipd.log"
-)
+    @property
+    def logging_path(self) -> str:
+        """
+        :return: The file in which to store logging data
+        """
+        return os.path.join(
+            os.environ.get("LOGGING_PATH", default="/tmp"),
+            "fat_ffipd.log"
+        )

@@ -23,6 +23,11 @@ from fat_ffipd.routes.api.ping import api_ping_blueprint
 
 
 def register_blueprints(app: Flask):
+    """
+    Registers all route blueprints in the flask app
+    :param app: The flask application
+    :return: None
+    """
     for blueprint in [
         static_blueprint,
         api_ping_blueprint

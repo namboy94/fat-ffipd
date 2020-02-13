@@ -73,11 +73,7 @@ deploy_production:
   only: [master]
   before_script: []
   script:
-    - docker build -f docker/Dockerfile -t fat-ffipd-prod . --no-cache
-    - docker stop fat-ffipd-prod-instance ||true
-    - docker rm fat-ffipd-prod-instance ||true
-    - docker run -d --restart always -p 5001:8000
-      --name fat-ffipd-prod-instance fat-ffipd-prod
+    - echo "TODO"
 
 release_upload:
   stage: release

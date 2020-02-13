@@ -49,7 +49,7 @@ def api(func: Callable) -> Callable:
                      or not request.is_json
                      or not isinstance(request.get_json(silent=True), dict)):
                 raise ApiException(
-                    "Not in JSON format", "Not in JSON format"
+                    "Not in JSON format", 400
                 )
 
             response["data"] = func(*args, **kwargs)

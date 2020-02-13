@@ -17,8 +17,6 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import os
-import pkg_resources
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -37,26 +35,3 @@ login_manager = LoginManager(app)
 """
 The Flask-Login Login Manager
 """
-
-
-def configure():
-
-    app.config["TRAP_HTTP_EXCEPTIONS"] = True
-    login_manager.session_protection = "strong"
-
-    if "FLASK_TESTING" in os.environ:
-        app.testing = os.environ["FLASK_TESTING"] == "1"
-
-    @app.context_processor
-    def inject_template_variables():
-        """
-        Injects the project's version string so that it will be available
-        in templates
-        :return: The dictionary to inject
-        """
-        version = \
-            pkg_resources.get_distribution("fat_ffipd").version
-        return {
-            "version": version,
-            "env": app.env
-        }
