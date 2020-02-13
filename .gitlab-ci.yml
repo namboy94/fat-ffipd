@@ -63,7 +63,7 @@ deploy_develop:
     - docker build -t fat-ffipd-dev . --no-cache
     - docker stop fat-ffipd-dev-instance ||true
     - docker rm fat-ffipd-dev-instance ||true
-    - docker run -d --restart always -p 5002:80
+    - docker run -d --restart always -p 5002:8000
       --name fat-ffipd-dev-instance fat-ffipd-dev
 
 deploy_production:
@@ -75,8 +75,8 @@ deploy_production:
     - docker build -t fat-ffipd-dev . --no-cache
     - docker stop fat-ffipd-dev-instance ||true
     - docker rm fat-ffipd-dev-instance ||true
-    - docker run -d --restart always -p 5001:80
-      --name fat-ffipd-dev-instance fat-ffipd-dev
+    - docker run -d --restart always -p 5001:8000
+      --name fat-ffipd-prod-instance fat-ffipd-dev
 
 release_upload:
   stage: release

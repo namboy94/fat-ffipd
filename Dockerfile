@@ -14,4 +14,4 @@ RUN apt update && \
 
 WORKDIR flask-app
 
-CMD "/usr/bin/python3 server.py"
+CMD ["/usr/bin/python3", "server.py"]
