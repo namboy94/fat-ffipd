@@ -1,4 +1,4 @@
-Welcome to @{PROJECT_NAME}' documentation!
+Welcome to fat-ffipd' documentation!
 =====================================
 
 Contents:
@@ -6,7 +6,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   @{PROJECT_NAME}.rst
+   fat-ffipd.rst
    modules.rst
 
 Indices and tables

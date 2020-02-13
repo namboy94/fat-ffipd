@@ -1,8 +1,10 @@
-# @{PROJECT_NAME}
+# fat-ffipd
+
+Flask Application Template - For Fast Initial Project Develoment
 
 |master|develop|
 |:----:|:-----:|
-|[![build status](@{PROJECT_URL}/badges/master/build.svg)](@{PROJECT_URL}/commits/master)|[![build status](@{PROJECT_URL}/badges/develop/build.svg)](@{PROJECT_URL}/commits/develop)|
+|[![build status](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/badges/master/build.svg)](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/commits/master)|[![build status](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/badges/develop/build.svg)](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/commits/develop)|
 
 ![Logo](resources/logo/logo-readme.png)
 
@@ -10,7 +12,7 @@
 
 * [Changelog](CHANGELOG)
 * [License (GPLv3)](LICENSE)
-* [Gitlab](@{PROJECT_URL})
-* [Github](@{GITHUB_USER}/@{PROJECT_NAME})
-* [Progstats](https://progstats.namibsun.net/projects/@{PROJECT_NAME})
-* [PyPi](https://pypi.org/project/@{PROJECT_NAME})
+* [Gitlab](https://gitlab.namibsun.net/namibsun/python/fat-ffipd)
+* [Github](namboy94/fat-ffipd)
+* [Progstats](https://progstats.namibsun.net/projects/fat-ffipd)
+* [PyPi](https://pypi.org/project/fat-ffipd)

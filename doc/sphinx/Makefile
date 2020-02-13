@@ -217,6 +217,6 @@ pseudoxml:
 
 
 buildsource:
-	sphinx-apidoc -f ../../@{PACKAGE_NAME} -o source
+	sphinx-apidoc -f ../../fat_ffipd -o source
 	@echo "Auto-generation of API documentation finished. " \
 		"The generated files are in 'source/'"

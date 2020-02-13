@@ -19,7 +19,7 @@ github_mirror:
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 0600 ~/.ssh/id_rsa
   script:
-    - git-mirror-pusher git@github.com:@{GITHUB_USER}/@{PROJECT_NAME}.git
+    - git-mirror-pusher git@github.com:namboy94/fat-ffipd.git
       master develop
 
 stylecheck:
@@ -51,26 +51,26 @@ docgen:
 deploy_develop:
   stage: deploy
   only: [develop]
-  tags: [@{PROJECT_NAME}-develop]
+  tags: [fat-ffipd-develop]
   before_script:
     - python3 -m venv virtual
     - source virtual/bin/activate
     - pip install ci-scripts
   script:
-    - export @{PROJECT_NAME}_ENV=develop
-    - deploy-flask $@{PROJECT_NAME}_DEVELOP_HOME
+    - export fat-ffipd_ENV=develop
+    - deploy-flask $fat-ffipd_DEVELOP_HOME
 
 deploy_production:
   stage: deploy
   only: [master]
-  tags: [@{PROJECT_NAME}]
+  tags: [fat-ffipd]
   before_script:
     - python3 -m venv virtual
     - source virtual/bin/activate
     - pip install ci-scripts
   script:
-    - export @{PROJECT_NAME}_ENV=production
-    - deploy-flask $@{PROJECT_NAME}_HOME
+    - export fat-ffipd_ENV=production
+    - deploy-flask $fat-ffipd_HOME
 
 release_upload:
   stage: release
