@@ -60,8 +60,6 @@ deploy_develop:
   only: [develop]
   before_script: []
   script:
-    - echo $DEV_HTTP_PORT
-    - export DEV_HTTP_PORT=5004
     - docker build -f docker/Dockerfile -t fat-ffipd-dev . --no-cache
     - cp docker/docker-compose-dev.yml docker-compose.yml
     - echo "$ENV_FILE" > .env
