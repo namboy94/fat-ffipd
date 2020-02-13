@@ -22,7 +22,6 @@ import pkg_resources
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from @{PACKAGE_NAME}.routes.blueprints import register_blueprints
 
 app = Flask(__name__)
 """
@@ -61,8 +60,6 @@ def configure():
             "version": version,
             "env": app.env
         }
-
-    register_blueprints(app)
 
 
 configure()

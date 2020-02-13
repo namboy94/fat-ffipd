@@ -26,8 +26,10 @@ from flask import render_template
 from flask.logging import default_handler
 from werkzeug.exceptions import HTTPException
 from @{PACKAGE_NAME}.db.auth.User import User
+from @{PACKAGE_NAME}.db.auth.ApiKey import ApiKey
 from @{PACKAGE_NAME}.db.models import create_tables
 from @{PACKAGE_NAME}.flask import app, db, login_manager
+from @{PACKAGE_NAME}.routes.blueprints import register_blueprints
 from @{PACKAGE_NAME}.config import logging_path, db_user, db_key, db_name
 
 
@@ -48,6 +50,7 @@ def init():
         app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
         db.init_app(app)
 
+        register_blueprints(app)
         create_tables(app, db)
 
         # Set up login manager
