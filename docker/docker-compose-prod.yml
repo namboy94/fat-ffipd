@@ -1,0 +1,21 @@
+version: "3.2"
+networks:
+  fat-ffipd-prod-net:
+    driver: bridge
+services:
+  fat-ffipd-prod-app:
+    image: "fat-ffipd-prod"
+    container_name: "fat-ffipd-prod-app-container"
+    depends_on:
+      - fat-ffipd-prod-db
+    networks:
+      - fat-ffipd-prod-net
+    ports:
+      - "${PROD_HTTP_PORT}:8000"
+    env_file: .env
+  fat-ffipd-prod-db:
+    image: "mariadb:latest"
+    container_name: "fat-ffipd-prod-db-container"
+    env_file: .env
+    networks:
+      - fat-ffipd-prod-net

@@ -60,11 +60,11 @@ deploy_develop:
   only: [develop]
   before_script: []
   script:
-    - docker build -t fat-ffipd-dev . --no-cache
-    - docker stop fat-ffipd-dev-instance ||true
-    - docker rm fat-ffipd-dev-instance ||true
-    - docker run -d --restart always -p 5002:8000
-      --name fat-ffipd-dev-instance fat-ffipd-dev
+    - docker build -f docker/Dockerfile -t fat-ffipd-dev . --no-cache
+    - cp docker/docker-compose-dev.yml docker-compose.yml
+    - echo '$ENV_FILE' > .env
+    - docker-compose up -d --no-recreate
+    - docker-compose up -d --no-deps fat-ffipd-dev-app
 
 deploy_production:
   stage: deploy
@@ -72,11 +72,11 @@ deploy_production:
   only: [master]
   before_script: []
   script:
-    - docker build -t fat-ffipd-dev . --no-cache
-    - docker stop fat-ffipd-dev-instance ||true
-    - docker rm fat-ffipd-dev-instance ||true
+    - docker build -f docker/Dockerfile -t fat-ffipd-prod . --no-cache
+    - docker stop fat-ffipd-prod-instance ||true
+    - docker rm fat-ffipd-prod-instance ||true
     - docker run -d --restart always -p 5001:8000
-      --name fat-ffipd-prod-instance fat-ffipd-dev
+      --name fat-ffipd-prod-instance fat-ffipd-prod
 
 release_upload:
   stage: release
