@@ -56,26 +56,26 @@ docgen:
 
 deploy_develop:
   stage: deploy
-  only: [develop]
   tags: [privileged]
+  only: [master]
   before_script: []
   script:
     - docker build -t fat-ffipd-dev . --no-cache
     - docker stop fat-ffipd-dev-instance ||true
     - docker rm fat-ffipd-dev-instance ||true
-    - docker run -d --restart always -p 9001:80
+    - docker run -d --restart always -p 5002:80
       --name fat-ffipd-dev-instance fat-ffipd-dev
 
 deploy_production:
   stage: deploy
-  only: [master]
   tags: [privileged]
+  only: [master]
   before_script: []
   script:
     - docker build -t fat-ffipd-dev . --no-cache
     - docker stop fat-ffipd-dev-instance ||true
     - docker rm fat-ffipd-dev-instance ||true
-    - docker run -d --restart always -p 9000:80
+    - docker run -d --restart always -p 5001:80
       --name fat-ffipd-dev-instance fat-ffipd-dev
 
 release_upload:
