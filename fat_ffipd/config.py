@@ -59,7 +59,7 @@ class Config:
             db_mode = "sqlite"
 
         if db_mode == "sqlite":
-            return "sqlite:////tmp/fat_ffipd.db"
+            return "sqlite:///" + Config.sqlite_path
         else:
             prefix = db_mode.upper()
 
@@ -73,6 +73,11 @@ class Config:
                 os.environ.get(prefix + "_PORT", default_port),
                 os.environ[prefix + "_DATABASE"],
             )
+
+    sqlite_path = "/tmp/fat-ffipd.db"
+    """
+    The path to the SQLite database file
+    """
 
     @property
     def smtp_host(self) -> str:

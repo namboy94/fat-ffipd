@@ -111,6 +111,14 @@ class User(ModelMixin, db.Model):
         """
         return verify_password(password, self.password_hash)
 
+    def verify_confirmation(self, confirmation_key: str) -> bool:
+        """
+        Verifies a confirmation key against the confirmation hash
+        :param confirmation_key: The key to check
+        :return: True if the key matches, False otherwise
+        """
+        return verify_password(confirmation_key, self.confirmation_hash)
+
     def __json__(self, include_children: bool = False) -> Dict[str, Any]:
         """
         Generates a dictionary containing the information of this model

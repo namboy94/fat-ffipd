@@ -1,4 +1,4 @@
-{#
+"""LICENSE
 Copyright 2020 Hermann Krumrey <hermann@krumreyh.com>
 
 This file is part of fat-ffipd.
@@ -15,11 +15,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
-<!--static/error_page.html-->
-{% extends "components/base_layout.html" %}
-{% block body %}
-    <h1>Error {{ error.code }}</h1>
-    <h3>{{ error.description }}</h3>
-{% endblock %}
+LICENSE"""
