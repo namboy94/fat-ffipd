@@ -20,6 +20,7 @@ LICENSE"""
 from flask import Flask
 from fat_ffipd.routes.static import static_blueprint
 from fat_ffipd.routes.api.ping import api_ping_blueprint
+from fat_ffipd.routes.user_management import user_management_blueprint
 
 
 def register_blueprints(app: Flask):
@@ -30,6 +31,7 @@ def register_blueprints(app: Flask):
     """
     for blueprint in [
         static_blueprint,
-        api_ping_blueprint
+        api_ping_blueprint,
+        user_management_blueprint
     ]:
         app.register_blueprint(blueprint)

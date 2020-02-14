@@ -17,7 +17,16 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 #}
 
-{% extends "components/base_layout.html" %}
-{% block body %}
-    <h1>Hello World!</h1>
-{% endblock %}
+<h1>Registration Confirmation</h1>
+<p>
+    Hi {{ username }}!
+    Registered at <a href="https://{{ host }}">{{ host }}</a>.
+</p>
+
+<p>
+    To confirm, visit the following link:
+</p>
+
+<a href="https://{{ target }}?user_id={{ user_id }}&confirm_key={{ confirm_key }}">
+    {{ target }}?user_id={{ user_id }}&confirm_key={{ confirm_key }}
+</a>

@@ -59,7 +59,8 @@ def init():
             pkg_resources.get_distribution("fat_ffipd").version
         return {
             "version": version,
-            "env": app.env
+            "env": app.env,
+            "config": Config()
         }
 
     try:
@@ -125,7 +126,7 @@ def init():
         :param error: The error that caused the error handler to be called
         :return: A redirect to the login page
         """
-        return render_template("error.html", error=error)
+        return render_template("static/error_page.html", error=error)
 
     app.logger.removeHandler(default_handler)
 

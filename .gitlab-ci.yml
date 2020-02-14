@@ -61,10 +61,10 @@ deploy_develop:
   before_script: []
   script:
     - docker build -f docker/Dockerfile -t fat-ffipd-dev . --no-cache
-    - cp docker/docker-compose-dev.yml docker-compose.yml
     - echo "$ENV_FILE" > .env
-    - docker-compose up -d --no-recreate
-    - docker-compose up -d --no-deps fat-ffipd-dev-app
+    - docker-compose -f docker/docker-compose-dev.yml up -d --no-recreate
+    - docker-compose -f docker/docker-compose-dev.yml up -d --no-deps
+      fat-ffipd-dev-app
     - rm .env
 
 deploy_production:
@@ -73,7 +73,12 @@ deploy_production:
   only: [master]
   before_script: []
   script:
-    - echo "TODO"
+    - docker build -f docker/Dockerfile -t fat-ffipd-prod . --no-cache
+    - echo "$ENV_FILE" > .env
+    - docker-compose -f docker/docker-compose-prod.yml up -d --no-recreate
+    - docker-compose -f docker/docker-compose-prod.yml up -d --no-deps
+      fat-ffipd-prod-app
+    - rm .env
 
 release_upload:
   stage: release

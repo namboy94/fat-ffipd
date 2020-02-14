@@ -75,6 +75,34 @@ class Config:
             )
 
     @property
+    def smtp_host(self) -> str:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return os.environ["SMTP_HOST"]
+
+    @property
+    def smtp_port(self) -> int:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return int(os.environ["SMTP_PORT"])
+
+    @property
+    def smtp_address(self) -> str:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return os.environ["SMTP_ADDRESS"]
+
+    @property
+    def smtp_password(self) -> str:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return os.environ["SMTP_PASSWORD"]
+
+    @property
     def logging_path(self) -> str:
         """
         :return: The file in which to store logging data
@@ -83,3 +111,13 @@ class Config:
             os.environ.get("LOGGING_PATH", default="/tmp"),
             "fat_ffipd.log"
         )
+
+    MIN_USERNAME_LENGTH = 1
+    """
+    The minimum length of a username
+    """
+
+    MAX_USERNAME_LENGTH = 12
+    """
+    The maximum length of a username
+    """

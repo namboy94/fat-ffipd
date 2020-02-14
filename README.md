@@ -6,7 +6,7 @@ Flask Application Template - For Fast Initial Project Develoment
 |:----:|:-----:|
 |[![build status](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/badges/master/build.svg)](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/commits/master)|[![build status](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/badges/develop/build.svg)](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/commits/develop)|
 
-![Logo](resources/logo/logo-readme.png)
+![Logo](fat_ffipd/static/logo.png)
 
 ## Further Information
 
