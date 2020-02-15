@@ -19,4 +19,16 @@ LICENSE"""
 
 
 class ApiException(Exception):
-    pass
+    """
+    Api raised when an API-related exception occurs
+    """
+
+    def __init__(self, reason: str, status_code: int):
+        """
+        Initializes the exception
+        :param reason: The reason the API Exception was raised
+        :param status_code: The status code associated with the exception
+        """
+        super().__init__(reason)
+        self.reason = reason
+        self.status_code = status_code

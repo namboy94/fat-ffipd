@@ -22,23 +22,53 @@ import base64
 import logging
 import random
 import string
+import pkg_resources
 from binascii import Error
 from typing import Optional
 from flask import render_template
 from flask.logging import default_handler
 from werkzeug.exceptions import HTTPException
-from fat_ffipd.db.auth.User import User
-from fat_ffipd.db.auth.ApiKey import ApiKey
+from fat_ffipd.config import Config
+from fat_ffipd.db.User import User
+from fat_ffipd.db.ApiKey import ApiKey
 from fat_ffipd.db.models import create_tables
-from fat_ffipd.flask import app, db, login_manager, configure
+from fat_ffipd.flask import app, db, login_manager
 from fat_ffipd.routes.blueprints import register_blueprints
-from fat_ffipd.config import logging_path, db_mode, db_host, db_port, \
-    db_user, db_key, db_name
 
 
 def init():
+    """
+    Initializes the Flask application
+    :return:
+    """
+    app.logger.removeHandler(default_handler)
 
-    configure()
+    logging.basicConfig(
+        filename=Config().logging_path,
+        level=logging.DEBUG,
+        format="[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
+    )
+
+    app.logger.info("STARTING FLASK")
+
+    app.config["TRAP_HTTP_EXCEPTIONS"] = True
+    login_manager.session_protection = "strong"
+    app.testing = os.environ.get("FLASK_TESTING") == "1"
+
+    @app.context_processor
+    def inject_template_variables():
+        """
+        Injects the project's version string so that it will be available
+        in templates
+        :return: The dictionary to inject
+        """
+        version = \
+            pkg_resources.get_distribution("fat_ffipd").version
+        return {
+            "version": version,
+            "env": app.env,
+            "config": Config()
+        }
 
     try:
         app.secret_key = os.environ["FLASK_SECRET"]
@@ -47,14 +77,7 @@ def init():
                                  for _ in range(0, 32))
         app.logger.warning("No secret key provided")
 
-    if db_mode == "sqlite":
-        uri = "sqlite:////tmp/fat_ffipd.db"
-    else:
-        uri = "{}://{}:{}@{}:{}/{}".format(
-            db_mode, db_user, db_key, db_host, db_port, db_name
-        )
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = uri
+    app.config["SQLALCHEMY_DATABASE_URI"] = Config().db_uri
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
@@ -88,7 +111,7 @@ def init():
                 api_key.encode("utf-8")
             ).decode("utf-8")
         except (TypeError, Error):
-            pass
+            return None
 
         db_api_key = ApiKey.query.get(api_key.split(":", 1)[0])
 
@@ -110,17 +133,4 @@ def init():
         :param error: The error that caused the error handler to be called
         :return: A redirect to the login page
         """
-        return render_template("error.html", error=error)
-
-    app.logger.removeHandler(default_handler)
-
-    logging.basicConfig(
-        filename=logging_path,
-        level=logging.DEBUG,
-        format="[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
-    )
-
-    app.logger.error("STARTING FLASK")
-    app.logger.warning("STARTING FLASK")
-    app.logger.info("STARTING FLASK")
-    app.logger.debug("STARTING FLASK")
+        return render_template("static/error_page.html", error=error)

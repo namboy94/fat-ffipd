@@ -17,18 +17,35 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from typing import Union
 from flask import render_template, Blueprint
-from flask_login import login_required
+from werkzeug import Response
 
 static_blueprint = Blueprint("static", __name__)
 
 
-@static_blueprint.route("/")
-def index():
-    return render_template("index.html")
+@static_blueprint.route("/", methods=["GET"])
+def index() -> Union[Response, str]:
+    """
+    The index page
+    :return: The response
+    """
+    return render_template("static/index.html")
 
 
-@static_blueprint.route("/restricted")
-@login_required
-def restricted():
-    render_template("restricted.html")
+@static_blueprint.route("/about", methods=["GET"])
+def about() -> Union[Response, str]:
+    """
+    The about page/"Impressum" for the website
+    :return: The response
+    """
+    return render_template("static/about.html")
+
+
+@static_blueprint.route("/privacy", methods=["GET"])
+def privacy() -> Union[Response, str]:
+    """
+    Page containing a privacy disclaimer
+    :return: The response
+    """
+    return render_template("static/privacy.html")

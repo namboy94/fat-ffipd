@@ -21,6 +21,15 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 <html lang="en">
     {% include "components/header.html" %}
     <body>
-        {% block body %}{% endblock %}
+        <div id="container">
+            <div id="header">{% include "components/navbar.html" %}</div>
+            <div id="body">
+                <div class="container content">
+                    {% include "components/alerts.html" %}
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+            <div id="footer">{% include "components/footer.html" %}</div>
+        </div>
     </body>
 </html>

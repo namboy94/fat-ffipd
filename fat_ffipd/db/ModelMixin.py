@@ -73,7 +73,7 @@ class ModelMixin:
         if "__json__" in dir(other):
             return other.__json__() == self.__json__()
         else:
-            return False  # pragma: no cover
+            return False
 
     def __hash__(self) -> int:
         """

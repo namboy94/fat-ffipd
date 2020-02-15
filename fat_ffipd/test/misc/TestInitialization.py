@@ -1,4 +1,4 @@
-{#
+"""LICENSE
 Copyright 2020 Hermann Krumrey <hermann@krumreyh.com>
 
 This file is part of fat-ffipd.
@@ -15,9 +15,27 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
-#}
+LICENSE"""
 
-{% extends "components/base_layout.html" %}
-{% block body %}
-    <h1>Hello World!</h1>
-{% endblock %}
+import os
+from unittest import TestCase
+from fat_ffipd.run import app, init
+
+
+class TestInitialization(TestCase):
+    """
+    Class that tests the initialization of the flask application
+    """
+
+    def test_flask_secret(self):
+        """
+        Tests if the FLASK_SECRET variable is set correctly
+        :return: None
+        """
+        os.environ["FLASK_TESTING"] = "1"
+        os.environ["FLASK_SECRET"] = "ABC"
+        init()
+        self.assertEqual(app.secret_key, "ABC")
+        os.environ.pop("FLASK_SECRET")
+        init()
+        self.assertNotEqual(app.secret_key, "ABC")

@@ -24,7 +24,7 @@ from setuptools import setup, find_packages
 if __name__ == "__main__":
 
     setup(
-        name="fat_ffipd",
+        name="fat-ffipd",
         version=open("version", "r").read(),
         description="Flask Application Template - "
                     "For Fast Initial Project Develoment",

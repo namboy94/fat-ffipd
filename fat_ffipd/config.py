@@ -18,55 +18,121 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import os
-from fat_ffipd.utils.env import resolve_env_variable
+import pkg_resources
+from typing import Optional
+from fat_ffipd.flask import app
 
-"""
-This file contains environment specific configuration information
-All of this information is found using environment variables
-"""
 
-recaptcha_site_key = resolve_env_variable("RECAPTCHA_SITE_KEY", nullable=True)
-"""
-The (public) recaptcha site key
-"""
+class Config:
+    """
+    Class that stores configuration data
+    """
 
-recaptcha_secret_key = resolve_env_variable("RECAPTCHA_SECRET_KEY",
-                                            nullable=True)
-"""
-The secret recaptcha key used to validate the recaptcha result
-"""
+    @property
+    def version(self) -> str:
+        """
+        :return: The version of the program
+        """
+        return pkg_resources.get_distribution("fat_ffipd").version
 
-db_mode = resolve_env_variable("DB_MODE", default="sqlite")
-"""
-The database mode to use. Currently, options are mysql and sqlite
-"""
+    @property
+    def recaptcha_site_key(self) -> Optional[str]:
+        """
+        :return: The (public) recaptcha site key
+        """
+        return os.environ.get("RECAPTCHA_SITE_KEY")
 
-db_host = resolve_env_variable("DB_HOST", default="localost")
-"""
-The database host
-"""
+    @property
+    def recaptcha_secret_key(self) -> Optional[str]:
+        """
+        :return: The secret recaptcha key used to validate the recaptcha result
+        """
+        return os.environ.get("RECAPTCHA_SECRET_KEY")
 
-db_port = resolve_env_variable("DB_PORT", _type=int, default=3306)
-"""
-The database port
-"""
+    @property
+    def db_uri(self) -> str:
+        """
+        :return: The database URI to use in this application
+        """
+        db_mode = os.environ.get("DB_MODE", "sqlite")
 
-db_user = resolve_env_variable("DB_USER", nullable=True)
-"""
-The database user
-"""
+        if os.environ.get("FLASK_TESTING") or os.environ.get("TESTING"):
+            db_mode = "sqlite"
 
-db_name = resolve_env_variable("DB_NAME", nullable=True)
-"""
-The database name
-"""
+        if db_mode == "sqlite":
+            app.logger.warning("Using SQLite database")
+            return "sqlite:///" + Config.sqlite_path
+        else:
+            prefix = db_mode.upper()
 
-db_key = resolve_env_variable("DB_KEY", nullable=True)
-"""
-The database key
-"""
+            default_port = 3306
 
-logging_path = os.path.join(
-    str(resolve_env_variable("PROJECT_ROOT_PATH", default="/tmp")),
-    "fat_ffipd.log"
-)
+            password = os.environ[prefix + "_PASSWORD"]
+            uri = "{}://{}:{}@{}:{}/{}".format(
+                db_mode,
+                os.environ[prefix + "_USER"],
+                password,
+                os.environ.get(prefix + "_HOST", "localhost"),
+                os.environ.get(prefix + "_PORT", default_port),
+                os.environ[prefix + "_DATABASE"],
+            )
+            app.logger.info("Using DB URI " + uri.replace(password, "?"))
+            return uri
+
+    sqlite_path = "/tmp/fat-ffipd.db"
+    """
+    The path to the SQLite database file
+    """
+
+    @property
+    def smtp_host(self) -> str:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return os.environ["SMTP_HOST"]
+
+    @property
+    def smtp_port(self) -> int:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return int(os.environ["SMTP_PORT"])
+
+    @property
+    def smtp_address(self) -> str:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return os.environ["SMTP_ADDRESS"]
+
+    @property
+    def smtp_password(self) -> str:
+        """
+        :return: The SMTP host used for outbound emails
+        """
+        return os.environ["SMTP_PASSWORD"]
+
+    @property
+    def logging_path(self) -> str:
+        """
+        :return: The file in which to store logging data
+        """
+        return os.path.join(
+            os.environ.get("LOGGING_PATH", default="/tmp"),
+            "fat-ffipd.log"
+        )
+
+    MIN_USERNAME_LENGTH = 1
+    """
+    The minimum length of a username
+    """
+
+    MAX_USERNAME_LENGTH = 12
+    """
+    The maximum length of a username
+    """
+
+    MAX_API_KEY_AGE = 2592000  # 30 days
+    """
+    The maximum age of an API key in seconds
+    """

@@ -33,6 +33,9 @@ unittest:
   tags: [docker]
   only: [master, develop]
   script:
+    - echo "$ENV_FILE" > .env
+    - export $(grep -v '^#' .env | xargs)
+    - rm .env
     - python-unittest
 
 type_check:
@@ -56,27 +59,31 @@ docgen:
 
 deploy_develop:
   stage: deploy
+  tags: [privileged]
   only: [develop]
-  tags: [fat-ffipd-develop]
   before_script: []
   script:
-    - docker build -t fat-ffipd-dev . --no-cache
-    - docker stop fat-ffipd-dev-instance ||true
-    - docker rm fat-ffipd-dev-instance ||true
-    - docker run -d --restart always -p 9001:80
-      --name fat-ffipd-dev-instance fat-ffipd-dev
+    - echo "$ENV_FILE" > .env
+    - export HTTP_PORT=$DEV_HTTP_PORT
+    - export DEPLOY_MODE=dev
+    - docker-compose -p fat_ffipd_dev build
+    - docker-compose -p fat_ffipd_dev up -d --no-recreate
+    - docker-compose -p fat_ffipd_dev up -d --no-deps app
+    - rm .env
 
 deploy_production:
   stage: deploy
+  tags: [privileged]
   only: [master]
-  tags: [fat-ffipd]
   before_script: []
   script:
-    - docker build -t fat-ffipd-dev . --no-cache
-    - docker stop fat-ffipd-dev-instance ||true
-    - docker rm fat-ffipd-dev-instance ||true
-    - docker run -d --restart always -p 9001:80
-      --name fat-ffipd-dev-instance fat-ffipd-dev
+    - echo "$ENV_FILE" > .env
+    - export HTTP_PORT=$PROD_HTTP_PORT
+    - export DEPLOY_MODE=prod
+    - docker-compose -p fat_ffipd_prod build
+    - docker-compose -p fat_ffipd_prod up -d --no-recreate
+    - docker-compose -p fat_ffipd_prod up -d --no-deps app
+    - rm .env
 
 release_upload:
   stage: release
