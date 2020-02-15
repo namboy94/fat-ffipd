@@ -34,7 +34,6 @@ if __name__ == '__main__':
     # noinspection PyProtectedMember
     server = cherrypy._cpserver.Server()
 
-    # Configure the server object
     server.socket_host = "0.0.0.0"
     server.socket_port = 8000
     server.thread_pool = 30

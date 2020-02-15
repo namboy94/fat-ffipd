@@ -25,7 +25,7 @@ import string
 import pkg_resources
 from binascii import Error
 from typing import Optional
-from flask import render_template
+from flask import render_template, flash, redirect, url_for
 from flask.logging import default_handler
 from werkzeug.exceptions import HTTPException
 from fat_ffipd.config import Config
@@ -89,7 +89,11 @@ def init_app():
         :param error: The error that caused the error handler to be called
         :return: A redirect to the login page
         """
-        return render_template("static/error_page.html", error=error)
+        if error.code == 401:
+            flash("You are not logged in", "danger")
+            return redirect(url_for("authentication.login"))
+        else:
+            return render_template("static/error_page.html", error=error)
 
 
 def init_db():
