@@ -65,7 +65,7 @@ class TestUser(_TestFramework):
         code = repr(user)
 
         # noinspection PyUnresolvedReferences
-        from fat_ffipd.db.auth.User import User
+        from fat_ffipd.db.User import User
 
         exec("generated['value'] = " + code)
         self.assertEqual(generated["value"], user)

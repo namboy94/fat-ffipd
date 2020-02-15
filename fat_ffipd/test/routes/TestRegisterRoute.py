@@ -19,7 +19,7 @@ LICENSE"""
 
 from unittest.mock import patch
 from fat_ffipd.test.TestFramework import _TestFramework
-from fat_ffipd.db.auth.User import User
+from fat_ffipd.db.User import User
 from fat_ffipd.config import Config
 
 

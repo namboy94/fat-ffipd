@@ -29,9 +29,9 @@ def create_tables(app: Flask, db: SQLAlchemy):
     :return: None
     """
     # noinspection PyUnresolvedReferences
-    from fat_ffipd.db.auth.User import User
+    from fat_ffipd.db.User import User
     # noinspection PyUnresolvedReferences
-    from fat_ffipd.db.auth.ApiKey import ApiKey
+    from fat_ffipd.db.ApiKey import ApiKey
 
     with app.app_context():
         db.create_all()

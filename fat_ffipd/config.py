@@ -131,3 +131,8 @@ class Config:
     """
     The maximum length of a username
     """
+
+    MAX_API_KEY_AGE = 2592000  # 30 days
+    """
+    The maximum age of an API key in seconds
+    """

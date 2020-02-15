@@ -22,10 +22,11 @@ from flask import Blueprint, request
 from flask_login import login_required
 from puffotter.crypto import generate_random, generate_hash
 from fat_ffipd.flask import db
-from fat_ffipd.db.auth.User import User
-from fat_ffipd.db.auth.ApiKey import ApiKey
+from fat_ffipd.config import Config
+from fat_ffipd.db.User import User
+from fat_ffipd.db.ApiKey import ApiKey
 from fat_ffipd.exceptions import ApiException
-from fat_ffipd.utils.decorators import api, api_login_required
+from fat_ffipd.routes.api.decorators import api, api_login_required
 
 user_management_api_blueprint = Blueprint("user_management_api", __name__)
 
@@ -60,7 +61,10 @@ def api_key() -> Dict[str, Any]:
 
             return {
                 "api_key": "{}:{}".format(_api_key.id, key),
-                "expiration": int(_api_key.creation_time) + ApiKey.MAX_AGE,
+                "expiration": (
+                        int(_api_key.creation_time)
+                        + Config.MAX_API_KEY_AGE
+                ),
                 "user": user.__json__(True)
             }
 

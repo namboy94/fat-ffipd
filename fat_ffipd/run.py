@@ -29,8 +29,8 @@ from flask import render_template
 from flask.logging import default_handler
 from werkzeug.exceptions import HTTPException
 from fat_ffipd.config import Config
-from fat_ffipd.db.auth.User import User
-from fat_ffipd.db.auth.ApiKey import ApiKey
+from fat_ffipd.db.User import User
+from fat_ffipd.db.ApiKey import ApiKey
 from fat_ffipd.db.models import create_tables
 from fat_ffipd.flask import app, db, login_manager
 from fat_ffipd.routes.blueprints import register_blueprints
@@ -53,9 +53,7 @@ def init():
 
     app.config["TRAP_HTTP_EXCEPTIONS"] = True
     login_manager.session_protection = "strong"
-
-    if "FLASK_TESTING" in os.environ:
-        app.testing = os.environ["FLASK_TESTING"] == "1"
+    app.testing = os.environ.get("FLASK_TESTING") == "1"
 
     @app.context_processor
     def inject_template_variables():
@@ -113,7 +111,7 @@ def init():
                 api_key.encode("utf-8")
             ).decode("utf-8")
         except (TypeError, Error):
-            pass
+            return None
 
         db_api_key = ApiKey.query.get(api_key.split(":", 1)[0])
 

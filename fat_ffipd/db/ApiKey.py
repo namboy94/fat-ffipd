@@ -21,6 +21,7 @@ LICENSE"""
 import time
 from typing import Dict, Any
 from fat_ffipd.flask import db
+from fat_ffipd.config import Config
 from fat_ffipd.db.ModelMixin import ModelMixin
 from puffotter.crypto import verify_password
 
@@ -38,11 +39,6 @@ class ApiKey(ModelMixin, db.Model):
         :param kwargs: The constructor keyword arguments
         """
         super().__init__(*args, **kwargs)
-
-    MAX_AGE = 2592000  # 30 days
-    """
-    The maximum age of an API key in seconds
-    """
 
     __tablename__ = "api_keys"
     """
@@ -82,7 +78,7 @@ class ApiKey(ModelMixin, db.Model):
         API Keys expire after 30 days
         :return: True if the key has expired, False otherwise
         """
-        return time.time() - self.creation_time > self.MAX_AGE
+        return time.time() - self.creation_time > Config.MAX_API_KEY_AGE
 
     def verify_key(self, key: str) -> bool:
         """

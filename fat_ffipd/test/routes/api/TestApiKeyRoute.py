@@ -19,12 +19,12 @@ LICENSE"""
 
 import json
 from fat_ffipd.test.TestFramework import _TestFramework
-from fat_ffipd.db.auth.ApiKey import ApiKey
+from fat_ffipd.db.ApiKey import ApiKey
 
 
-class TestLoginRoute(_TestFramework):
+class TestApiKeyRoute(_TestFramework):
     """
-    Class that tests log-in features
+    Class that tests API-key related features
     """
 
     def test_requesting_api_key(self):

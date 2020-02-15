@@ -24,8 +24,8 @@ from unittest import TestCase
 from puffotter.crypto import generate_random, generate_hash
 from fat_ffipd.run import app, db, init
 from fat_ffipd.config import Config
-from fat_ffipd.db.auth.User import User
-from fat_ffipd.db.auth.ApiKey import ApiKey
+from fat_ffipd.db.User import User
+from fat_ffipd.db.ApiKey import ApiKey
 
 
 class _TestFramework(TestCase):

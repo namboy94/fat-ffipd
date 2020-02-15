@@ -18,7 +18,7 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from fat_ffipd.test.TestFramework import _TestFramework
-from fat_ffipd.db.auth.User import User
+from fat_ffipd.db.User import User
 
 
 class TestProfileRoute(_TestFramework):

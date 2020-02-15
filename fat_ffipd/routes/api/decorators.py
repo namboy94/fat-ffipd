@@ -44,10 +44,10 @@ def api(func: Callable) -> Callable:
         response = {"status": "ok"}
 
         try:
-            if request.method in ["POST", "PUT"] and \
-                    (not request.content_type.startswith("application/json")
-                     or not request.is_json
-                     or not isinstance(request.get_json(silent=True), dict)):
+            is_json = request.content_type.startswith("application/json") \
+                      and request.is_json \
+                      and isinstance(request.get_json(silent=True), dict)
+            if request.method in ["POST", "PUT", "DELETE"] and not is_json:
                 raise ApiException(
                     "Not in JSON format", 400
                 )
@@ -62,9 +62,9 @@ def api(func: Callable) -> Callable:
                 code = e.status_code
                 response["reason"] = e.reason
 
-            else:  # pragma: no cover
+            else:
                 code = 400
-                response["reason"] = "Bad Request: {}".format(type(e))
+                response["reason"] = "Bad Request: {}".format(type(e).__name__)
 
         return make_response(jsonify(response), code)
 

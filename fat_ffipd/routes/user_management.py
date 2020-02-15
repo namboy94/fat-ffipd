@@ -8,7 +8,7 @@ from puffotter.recaptcha import verify_recaptcha
 from puffotter.smtp import send_email
 from fat_ffipd.flask import app, db
 from fat_ffipd.config import Config
-from fat_ffipd.db.auth.User import User
+from fat_ffipd.db.User import User
 
 user_management_blueprint = Blueprint("user_management", __name__)
 
