@@ -17,29 +17,19 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import cherrypy
-from fat_ffipd.run import app, init
+from fat_ffipd.test.TestFramework import _TestFramework
 from fat_ffipd.bg_tasks import bg_tasks
 
-if __name__ == '__main__':
 
-    init()
-    for task in bg_tasks.values():
-        task.start()
+class TestBackgroundTasks(_TestFramework):
+    """
+    Tests background tasks
+    """
 
-    cherrypy.tree.graft(app, "/")
-
-    cherrypy.server.unsubscribe()
-
-    # noinspection PyProtectedMember
-    server = cherrypy._cpserver.Server()
-
-    # Configure the server object
-    server.socket_host = "0.0.0.0"
-    server.socket_port = 8000
-    server.thread_pool = 30
-
-    server.subscribe()
-
-    cherrypy.engine.start()
-    cherrypy.engine.block()
+    def test_im_alive(self):
+        """
+        Tests the I'm alive background task
+        :return: None
+        """
+        im_alive_task = bg_tasks["im_alive"]
+        im_alive_task.function()
