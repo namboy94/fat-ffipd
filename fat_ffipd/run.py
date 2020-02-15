@@ -41,6 +41,15 @@ def init():
     Initializes the Flask application
     :return:
     """
+    app.logger.removeHandler(default_handler)
+
+    logging.basicConfig(
+        filename=Config().logging_path,
+        level=logging.DEBUG,
+        format="[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
+    )
+
+    app.logger.info("STARTING FLASK")
 
     app.config["TRAP_HTTP_EXCEPTIONS"] = True
     login_manager.session_protection = "strong"
@@ -127,16 +136,3 @@ def init():
         :return: A redirect to the login page
         """
         return render_template("static/error_page.html", error=error)
-
-    app.logger.removeHandler(default_handler)
-
-    logging.basicConfig(
-        filename=Config().logging_path,
-        level=logging.DEBUG,
-        format="[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
-    )
-
-    app.logger.error("STARTING FLASK")
-    app.logger.warning("STARTING FLASK")
-    app.logger.info("STARTING FLASK")
-    app.logger.debug("STARTING FLASK")

@@ -20,6 +20,7 @@ LICENSE"""
 import os
 import pkg_resources
 from typing import Optional
+from fat_ffipd.flask import app
 
 
 class Config:
@@ -59,20 +60,24 @@ class Config:
             db_mode = "sqlite"
 
         if db_mode == "sqlite":
+            app.logger.warning("Using SQLite database")
             return "sqlite:///" + Config.sqlite_path
         else:
             prefix = db_mode.upper()
 
             default_port = 3306
 
-            return "{}://{}:{}@{}:{}/{}".format(
+            password = os.environ[prefix + "_PASSWORD"]
+            uri = "{}://{}:{}@{}:{}/{}".format(
                 db_mode,
                 os.environ[prefix + "_USER"],
-                os.environ[prefix + "_PASSWORD"],
+                password,
                 os.environ.get(prefix + "_HOST", "localhost"),
                 os.environ.get(prefix + "_PORT", default_port),
                 os.environ[prefix + "_DATABASE"],
             )
+            app.logger.info("Using DB URI " + uri.replace(password, "?"))
+            return uri
 
     sqlite_path = "/tmp/fat-ffipd.db"
     """
@@ -114,7 +119,7 @@ class Config:
         """
         return os.path.join(
             os.environ.get("LOGGING_PATH", default="/tmp"),
-            "fat_ffipd.log"
+            "fat-ffipd.log"
         )
 
     MIN_USERNAME_LENGTH = 1
