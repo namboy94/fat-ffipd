@@ -88,9 +88,24 @@ def init_app():
         """
         if error.code == 401:
             flash("You are not logged in", "danger")
-            return redirect(url_for("authentication.login"))
+            return redirect(url_for("user_management.login"))
         else:
             return render_template("static/error_page.html", error=error)
+
+    @app.errorhandler(Exception)
+    def exception_handling(e: Exception):
+        """
+        Handles any uncaught exceptions and shows an error 500 page
+        :param e: The caught exception
+        :return: None
+        """
+        error = HTTPException("The server encountered an internal error and "
+                              "was unable to complete your request. "
+                              "Either the server is overloaded or there "
+                              "is an error in the application.")
+        error.code = 500
+        app.logger.error("Caught exception: {}".format(e))
+        return render_template("static/error_page.html", error=error)
 
 
 def init_db():
