@@ -18,12 +18,14 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import os
-from typing import Tuple
+from base64 import b64encode
+from typing import Tuple, Dict
 from unittest import TestCase
 from puffotter.crypto import generate_random, generate_hash
 from fat_ffipd.run import app, db, init
 from fat_ffipd.config import Config
 from fat_ffipd.db.auth.User import User
+from fat_ffipd.db.auth.ApiKey import ApiKey
 
 
 class _TestFramework(TestCase):
@@ -102,3 +104,31 @@ class _TestFramework(TestCase):
             "username": user.username,
             "password": password
         })
+
+    def generate_api_key(self, user: User) \
+            -> Tuple[ApiKey, str, Dict[str, str]]:
+        """
+        Generates an API key and base64 encoded headers for requests
+        :param user: The user for which to create the key
+        :return: The API key object, the actual API key, the headers
+        """
+        key = generate_random(20)
+        hashed = generate_hash(key)
+        api_key_obj = ApiKey(user=user, key_hash=hashed)
+        self.db.session.add(api_key_obj)
+        self.db.session.commit()
+        api_key = "{}:{}".format(api_key_obj.id, key)
+
+        return api_key_obj, api_key, self.generate_api_key_headers(api_key)
+
+    # noinspection PyMethodMayBeStatic
+    def generate_api_key_headers(self, api_key: str) -> Dict[str, str]:
+        """
+        Creates HTTP Authorization headers for an API key
+        :param api_key: The API key to put in the headers
+        :return: The headers
+        """
+        encoded = b64encode(api_key.encode("utf-8")).decode("utf-8")
+        return {
+            "Authorization": "Basic {}".format(encoded)
+        }

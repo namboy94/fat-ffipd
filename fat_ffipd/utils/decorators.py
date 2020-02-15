@@ -64,7 +64,7 @@ def api(func: Callable) -> Callable:
 
             else:  # pragma: no cover
                 code = 400
-                response["reason"] = "Bad Request"
+                response["reason"] = "Bad Request: {}".format(type(e))
 
         return make_response(jsonify(response), code)
 

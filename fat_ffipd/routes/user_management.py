@@ -1,4 +1,6 @@
 import os
+from typing import Union
+from werkzeug import Response
 from flask import Blueprint, redirect, url_for, request, render_template, flash
 from flask_login import login_required, current_user, logout_user, login_user
 from puffotter.crypto import generate_hash, generate_random
@@ -12,7 +14,7 @@ user_management_blueprint = Blueprint("user_management", __name__)
 
 
 @user_management_blueprint.route("/login", methods=["GET", "POST"])
-def login():
+def login() -> Union[Response, str]:
     """
     Page that allows the user to log in
     :return: The response
@@ -22,8 +24,7 @@ def login():
         password = request.form["password"]
         remember_me = request.form.get("remember_me") in ["on", True]
 
-        existing = {user.username: user for user in User.query.all()}
-        user: User = existing.get(username)
+        user: User = User.query.filter_by(username=username).first()
 
         if user is None:
             flash("User does not exist", "danger")
@@ -45,7 +46,7 @@ def login():
 
 @user_management_blueprint.route("/logout", methods=["GET"])
 @login_required
-def logout():
+def logout() -> Union[Response, str]:
     """
     Logs out the user
     :return: The response
@@ -57,7 +58,7 @@ def logout():
 
 
 @user_management_blueprint.route("/register", methods=["GET", "POST"])
-def register():
+def register() -> Union[Response, str]:
     """
     Page that allows a new user to register
     :return: The response
@@ -82,8 +83,6 @@ def register():
         if len(username) < _min or len(username) > _max:
             flash("Username must be between {} and {} characters long"
                   .format(_min, _max), "danger")
-        elif ":" in username:
-            flash("Username contains illegal character ':'", "danger")
         elif password != password_repeat:
             flash("Passwords do not match", "danger")
         elif username in usernames:
@@ -130,15 +129,14 @@ def register():
 
 
 @user_management_blueprint.route("/confirm", methods=["GET"])
-def confirm():
+def confirm() -> Union[Response, str]:
     """
     Confirms a user
     :return: The response
     """
     user_id = int(request.args["user_id"])
     confirm_key = request.args["confirm_key"]
-    existing = {user.id: user for user in User.query.all()}
-    user: User = existing.get(user_id)
+    user: User = User.query.get(user_id)
 
     if user is None:
         flash("User does not exist", "danger")
@@ -155,7 +153,7 @@ def confirm():
 
 
 @user_management_blueprint.route("/forgot", methods=["POST", "GET"])
-def forgot():
+def forgot() -> Union[Response, str]:
     """
     Allows a user to reset their password
     :return: The response
@@ -167,8 +165,7 @@ def forgot():
             request.form["g-recaptcha-response"],
             Config().recaptcha_secret_key
         )
-        existing = {user.email: user for user in User.query.all()}
-        user: User = existing.get(email)
+        user: User = User.query.filter_by(email=email).first()
 
         if not recaptcha_result:
             flash("Invalid ReCaptcha Response", "danger")
@@ -208,7 +205,7 @@ def forgot():
 
 @user_management_blueprint.route("/profile", methods=["GET"])
 @login_required
-def profile():
+def profile() -> Union[Response, str]:
     """
     Allows a user to edit their profile details
     :return: The response
@@ -218,7 +215,7 @@ def profile():
 
 @user_management_blueprint.route("/change_password", methods=["POST"])
 @login_required
-def change_password():
+def change_password() -> Union[Response, str]:
     """
     Allows the user to change their password
     :return: The response
@@ -241,7 +238,7 @@ def change_password():
 
 @user_management_blueprint.route("/delete_user", methods=["POST"])
 @login_required
-def delete_user():
+def delete_user() -> Union[Response, str]:
     """
     Allows a user to delete their account
     :return: The response

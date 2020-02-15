@@ -90,8 +90,6 @@ class TestRegisterRoute(_TestFramework):
                  "expected": b"Username must be between"},
                 {"username": "-" * (Config.MAX_USERNAME_LENGTH + 1),
                  "expected": b"Username must be between"},
-                {"username": "abc:def",
-                 "expected": b"Username contains illegal character"},
                 {"username": user.username,
                  "expected": b"Username already exists"},
                 {"email": user.email,
