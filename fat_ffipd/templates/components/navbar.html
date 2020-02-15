@@ -58,8 +58,8 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 
             {% else %}
 
-                <li class="nav-item {% if request.path == "/" %} active {% endif %}">
-                    <a class="nav-link" href="{{ url_for("static.index") }}">Home</a>
+                <li class="nav-item {% if request.path == "/profile" %} active {% endif %}">
+                    <a class="nav-link" href="{{ url_for("user_management.profile") }}">Profile</a>
                 </li>
 
             {% endif %}

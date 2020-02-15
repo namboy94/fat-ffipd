@@ -83,15 +83,15 @@ def register():
             flash("Username must be between {} and {} characters long"
                   .format(_min, _max), "danger")
         elif ":" in username:
-            flash("Username contains illegal character ':'")
+            flash("Username contains illegal character ':'", "danger")
         elif password != password_repeat:
-            flash("Passwords do not match")
+            flash("Passwords do not match", "danger")
         elif username in usernames:
-            flash("Username already exists")
+            flash("Username already exists", "danger")
         elif email in emails:
-            flash("Email already in use")
+            flash("Email already in use", "danger")
         elif not recaptcha_result:
-            flash("ReCaptcha not solved correctly")
+            flash("ReCaptcha not solved correctly", "danger")
         else:
             confirmation_key = generate_random(32)
             confirmation_hash = generate_hash(confirmation_key)
@@ -141,16 +141,16 @@ def confirm():
     user: User = existing.get(user_id)
 
     if user is None:
-        flash("User does not exist")
+        flash("User does not exist", "danger")
     elif user.confirmed:
-        flash("User already confirmed")
+        flash("User already confirmed", "warning")
     elif not user.verify_confirmation(confirm_key):
-        flash("Confirmation key invalid")
+        flash("Confirmation key invalid", "warning")
     else:
         print("D")
         user.confirmed = True
         db.session.commit()
-        flash("User confirmed successfully")
+        flash("User confirmed successfully", "success")
     return redirect(url_for("static.index"))
 
 
@@ -171,7 +171,7 @@ def forgot():
         user: User = existing.get(email)
 
         if not recaptcha_result:
-            flash("Invalid ReCaptcha Response")
+            flash("Invalid ReCaptcha Response", "danger")
             return redirect(url_for("user_management.forgot"))
         else:
             if user is None:
@@ -199,7 +199,7 @@ def forgot():
                     Config().smtp_password,
                     Config().smtp_port
                 )
-            flash("Password was reset successfully")
+            flash("Password was reset successfully", "success")
             return redirect(url_for("static.index"))
 
     else:
@@ -229,13 +229,13 @@ def change_password():
     user: User = current_user
 
     if new_password != password_repeat:
-        flash("Passwords do not match")
+        flash("Passwords do not match", "danger")
     elif not user.verify_password(old_password):
-        flash("Invalid Password")
+        flash("Invalid Password", "danger")
     else:
         user.password_hash = generate_hash(new_password)
         db.session.commit()
-        flash("Password changed successfully")
+        flash("Password changed successfully", "success")
     return redirect(url_for("user_management.profile"))
 
 
@@ -250,12 +250,12 @@ def delete_user():
     user: User = current_user
 
     if not user.verify_password(password):
-        flash("Invalid Password")
+        flash("Invalid Password", "danger")
     else:
         app.logger.info("Deleting user {}".format(user))
         db.session.delete(user)
         db.session.commit()
         logout_user()
-        flash("User was deleted")
+        flash("User was deleted", "success")
         return redirect(url_for("static.index"))
     return redirect(url_for("user_management.profile"))
