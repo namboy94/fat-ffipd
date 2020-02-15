@@ -22,7 +22,6 @@ import base64
 import logging
 import random
 import string
-import pkg_resources
 from binascii import Error
 from typing import Optional
 from flask import render_template, flash, redirect, url_for
@@ -74,10 +73,8 @@ def init_app():
         in templates
         :return: The dictionary to inject
         """
-        version = \
-            pkg_resources.get_distribution("fat_ffipd").version
         return {
-            "version": version,
+            "version": Config().version,
             "env": app.env,
             "config": Config()
         }
