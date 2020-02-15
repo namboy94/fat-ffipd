@@ -18,13 +18,16 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import cherrypy
+from cherrypy.process.plugins import BackgroundTask
 from fat_ffipd.run import app, init
 from fat_ffipd.bg_tasks import bg_tasks
 
 if __name__ == '__main__':
 
     init()
-    for task in bg_tasks.values():
+    for name, (delay, function) in bg_tasks.items():
+        app.logger.info("Starting background task {}".format(name))
+        task = BackgroundTask(delay, function)
         task.start()
 
     cherrypy.tree.graft(app, "/")

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-from cherrypy.process.plugins import BackgroundTask
+from typing import Dict, Tuple, Callable
 
 
 def im_alive():
@@ -29,8 +29,8 @@ def im_alive():
     print("I'm alive")
 
 
-bg_tasks = {
-    "im_alive": BackgroundTask(5, im_alive)
+bg_tasks: Dict[str, Tuple[int, Callable]] = {
+    "im_alive": (5, im_alive)
 }
 """
 A dictionary containing background tasks for the flask application

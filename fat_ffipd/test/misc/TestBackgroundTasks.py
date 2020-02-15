@@ -31,5 +31,5 @@ class TestBackgroundTasks(_TestFramework):
         Tests the I'm alive background task
         :return: None
         """
-        im_alive_task = bg_tasks["im_alive"]
-        im_alive_task.function()
+        im_alive_task = bg_tasks["im_alive"][1]
+        im_alive_task()
