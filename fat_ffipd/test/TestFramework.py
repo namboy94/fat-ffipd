@@ -26,6 +26,7 @@ from fat_ffipd.run import app, db, init
 from fat_ffipd.config import Config
 from fat_ffipd.db.User import User
 from fat_ffipd.db.ApiKey import ApiKey
+from puffotter.env import load_env_file
 
 
 class _TestFramework(TestCase):
@@ -39,6 +40,7 @@ class _TestFramework(TestCase):
         :return: None
         """
         os.environ["FLASK_TESTING"] = "1"
+        load_env_file()
 
         self.app = app
         self.db = db
