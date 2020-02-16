@@ -1,5 +1,6 @@
-V 0.1.1:
+V 0.2.0:
   - Fixed issues with mysql timeouts
+  - Added support for background tasks
 V 0.1.0:
   - Created initial structure based on bundesliga-tippspiel
 V 0.0.1:
