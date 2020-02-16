@@ -22,7 +22,8 @@ To convert this project into a new one, run ```init.py``` and follow the
 prompts. This will set up the project in a new directory, defined by the
 project name given during prompting.
 
-To start the web application, you can simply call ```python server.py```.
+To start the web application, you can simply call ```python server.py``` after
+installing it using ```python setup.py install```.
 
 To run the application in docker, make sure all necessary environment
 variables are stored in the ```.env``` file. Also make sure that the
