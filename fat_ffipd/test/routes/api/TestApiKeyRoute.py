@@ -19,7 +19,7 @@ LICENSE"""
 
 import json
 from fat_ffipd.test.TestFramework import _TestFramework
-from fat_ffipd.db.ApiKey import ApiKey
+from puffotter.flask.db.ApiKey import ApiKey
 
 
 class TestApiKeyRoute(_TestFramework):

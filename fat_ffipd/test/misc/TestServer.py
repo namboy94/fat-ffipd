@@ -17,21 +17,34 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-from flask import Flask
-from fat_ffipd.routes.static import static_blueprint
-from fat_ffipd.routes.user_management import user_management_blueprint
-from fat_ffipd.routes.api.user_management import user_management_api_blueprint
+from unittest.mock import patch
+from fat_ffipd.test.TestFramework import _TestFramework
+from fat_ffipd.main import main
 
 
-def register_blueprints(app: Flask):
+class TestServer(_TestFramework):
     """
-    Registers all route blueprints in the flask app
-    :param app: The flask application
-    :return: None
+    Class that tests starting the server
     """
-    for blueprint in [
-        static_blueprint,
-        user_management_blueprint,
-        user_management_api_blueprint
-    ]:
-        app.register_blueprint(blueprint)
+
+    def test_starting_server(self):
+        """
+        Tests starting the server
+        :return: None
+        """
+        class Server:
+            def __init__(self, *arg, **kwargs):
+                pass
+
+            def start(self):
+                raise KeyboardInterrupt()
+
+            def stop(self):
+                pass
+
+        def nop(*_, **__):
+            pass
+
+        with patch("puffotter.flask.wsgi.Server", Server):
+            with patch("puffotter.flask.wsgi.__start_background_tasks", nop):
+                main()

@@ -18,8 +18,8 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import time
-from fat_ffipd.config import Config
-from fat_ffipd.db.ApiKey import ApiKey
+from puffotter.flask.Config import Config
+from puffotter.flask.db.ApiKey import ApiKey
 from fat_ffipd.test.TestFramework import _TestFramework
 
 

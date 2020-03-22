@@ -19,8 +19,9 @@ LICENSE"""
 
 import os
 import pathlib
+from fat_ffipd import sentry_dsn
 from fat_ffipd.test.TestFramework import _TestFramework
-from fat_ffipd.config import Config
+from puffotter.flask.Config import Config
 
 
 class TestConfig(_TestFramework):
@@ -33,7 +34,6 @@ class TestConfig(_TestFramework):
         Tests the database configuration
         :return: None
         """
-        self.assertEqual(Config().db_uri, "sqlite:///" + Config.sqlite_path)
         os.environ.pop("FLASK_TESTING")
         os.environ["DB_MODE"] = "mysql"
         os.environ["MYSQL_USER"] = "abc"
@@ -41,7 +41,8 @@ class TestConfig(_TestFramework):
         os.environ["MYSQL_HOST"] = "ghi"
         os.environ["MYSQL_PORT"] = "1000"
         os.environ["MYSQL_DATABASE"] = "xyz"
-        self.assertEqual(Config().db_uri, "mysql://abc:def@ghi:1000/xyz")
+        Config.load_config("fat_ffipd", sentry_dsn)
+        self.assertEqual(Config.DB_URI, "mysql://abc:def@ghi:1000/xyz")
 
     def test_version(self):
         """
@@ -54,4 +55,4 @@ class TestConfig(_TestFramework):
         )
         with open(version_file, "r") as f:
             version = f.read()
-        self.assertEqual(version, Config().version)
+        self.assertEqual(version, Config.VERSION)

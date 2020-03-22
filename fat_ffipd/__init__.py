@@ -16,3 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
+
+sentry_dsn = "https://4f6db305797046f6985fb0c2dc023423@sentry.namibsun.net/17"
+"""
+The sentry DSN used for error logging
+"""

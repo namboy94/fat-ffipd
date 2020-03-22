@@ -103,7 +103,8 @@ class TestConfig(_TestFramework):
             def get_json():
                 print({}["test"])
 
-        with patch("fat_ffipd.routes.api.user_management.request", Mocker):
+        with patch("puffotter.flask.routes.api.user_management.request",
+                   Mocker):
             user, password, _ = self.generate_sample_user()
             resp = self.client.post("/api/v1/key", json={
                 "username": user.username,
