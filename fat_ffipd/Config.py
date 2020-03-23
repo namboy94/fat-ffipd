@@ -17,30 +17,23 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import os
-from typing import List
-from flask.blueprints import Blueprint
-from puffotter.env import load_env_file
-from puffotter.flask.base import db
-from puffotter.flask.Config import Config
-from puffotter.flask.initialize import init_flask
-from puffotter.flask.wsgi import start_server
-from fat_ffipd import sentry_dsn, root_path
-from fat_ffipd.bg_tasks import bg_tasks
+from typing import Type
+from puffotter.flask.Config import Config as BaseConfig
 
 
-def main():
+class Config(BaseConfig):
     """
-    Starts the flask application
-    :return: None
+    Configuration for the flask application
     """
-    load_env_file()
-    init_flask(
-        "fat_ffipd",
-        sentry_dsn,
-        root_path,
-        Config,
-        [],
-        []
-    )
-    start_server(Config, bg_tasks)
+
+    @classmethod
+    def _load_extras(cls, parent: Type[BaseConfig]):
+        """
+        Loads non-standard configuration variables
+        :param parent: The base configuration
+        :return: None
+        """
+        parent.API_VERSION = "5"
+        parent.STRINGS.update({
+            "password_changed": "PaSsWoRd ChAnGeD SuCeSsFuLlY"
+        })

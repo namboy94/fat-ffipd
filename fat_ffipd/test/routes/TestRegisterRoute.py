@@ -18,9 +18,9 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from unittest.mock import patch
-from fat_ffipd.test.TestFramework import _TestFramework
 from puffotter.flask.db.User import User
-from puffotter.flask.Config import Config
+from fat_ffipd.test.TestFramework import _TestFramework
+from fat_ffipd.Config import Config
 
 
 class TestRegisterRoute(_TestFramework):

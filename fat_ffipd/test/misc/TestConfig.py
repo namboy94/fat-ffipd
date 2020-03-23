@@ -21,7 +21,7 @@ import os
 import pathlib
 from fat_ffipd import sentry_dsn
 from fat_ffipd.test.TestFramework import _TestFramework
-from puffotter.flask.Config import Config
+from fat_ffipd.Config import Config
 
 
 class TestConfig(_TestFramework):
@@ -41,7 +41,7 @@ class TestConfig(_TestFramework):
         os.environ["MYSQL_HOST"] = "ghi"
         os.environ["MYSQL_PORT"] = "1000"
         os.environ["MYSQL_DATABASE"] = "xyz"
-        Config.load_config("fat_ffipd", sentry_dsn)
+        Config.load_config(self.root_path, "fat_ffipd", sentry_dsn)
         self.assertEqual(Config.DB_URI, "mysql://abc:def@ghi:1000/xyz")
 
     def test_version(self):

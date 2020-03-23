@@ -20,6 +20,7 @@ LICENSE"""
 from fat_ffipd.main import root_path
 from puffotter.flask.test.TestFramework import \
     _TestFramework as __TestFrameWork
+from fat_ffipd.Config import Config
 
 
 class _TestFramework(__TestFrameWork):
@@ -28,3 +29,4 @@ class _TestFramework(__TestFrameWork):
     """
     module_name = "fat_ffipd"
     root_path = root_path
+    config = Config
