@@ -18,7 +18,7 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from fat_ffipd.test.TestFramework import _TestFramework
-from fat_ffipd.bg_tasks import bg_tasks
+from fat_ffipd.background import bg_tasks
 
 
 class TestBackgroundTasks(_TestFramework):

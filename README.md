@@ -1,6 +1,6 @@
 # fat-ffipd
 
-Flask Application Template - For Fast Initial Project Develoment
+Flask Application Template - For Fast Initial Project Development
 
 |master|develop|
 |:----:|:-----:|

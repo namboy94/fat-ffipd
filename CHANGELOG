@@ -1,3 +1,5 @@
+V 0.3.2:
+  - More convenience features
 V 0.3.1:
   - Removed MYSQL_DATABASE environment variable from docker-compose.yml
 V 0.3.0:
