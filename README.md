@@ -36,6 +36,6 @@ application.
 * [Changelog](CHANGELOG)
 * [License (GPLv3)](LICENSE)
 * [Gitlab](https://gitlab.namibsun.net/namibsun/python/fat-ffipd)
-* [Github](namboy94/fat-ffipd)
+* [Github](https://github.com/namboy94/fat-ffipd)
 * [Progstats](https://progstats.namibsun.net/projects/fat-ffipd)
 * [PyPi](https://pypi.org/project/fat-ffipd)
