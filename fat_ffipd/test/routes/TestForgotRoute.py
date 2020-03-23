@@ -41,9 +41,10 @@ class TestForgotRoute(_TestFramework):
         """
         user, password, _ = self.generate_sample_user()
         with self.client:
-            with patch("fat_ffipd.routes.user_management.send_email") as m:
-                with patch("fat_ffipd.routes.user_management.generate_random",
-                           lambda x: "testpass"):
+            with patch("puffotter.flask.routes.user_management.send_email") \
+                    as m:
+                with patch("puffotter.flask.routes.user_management."
+                           "generate_random", lambda x: "testpass"):
                     self.assertEqual(0, m.call_count)
                     resp = self.client.post(
                         "/forgot",
@@ -67,9 +68,10 @@ class TestForgotRoute(_TestFramework):
         """
         user, password, _ = self.generate_sample_user()
         with self.client:
-            with patch("fat_ffipd.routes.user_management.send_email") as m:
-                with patch("fat_ffipd.routes.user_management.generate_random",
-                           lambda x: "testpass"):
+            with patch("puffotter.flask.routes.user_management.send_email") \
+                    as m:
+                with patch("puffotter.flask.routes.user_management."
+                           "generate_random", lambda x: "testpass"):
                     self.assertEqual(0, m.call_count)
                     resp = self.client.post(
                         "/forgot",
@@ -93,10 +95,11 @@ class TestForgotRoute(_TestFramework):
         """
         user, password, _ = self.generate_sample_user()
         with self.client:
-            with patch("fat_ffipd.routes.user_management.send_email") as m:
-                with patch("fat_ffipd.routes.user_management.generate_random",
-                           lambda x: "testpass"):
-                    with patch("fat_ffipd.routes.user_management"
+            with patch("puffotter.flask.routes.user_management.send_email") \
+                    as m:
+                with patch("puffotter.flask.routes.user_management"
+                           ".generate_random", lambda x: "testpass"):
+                    with patch("puffotter.flask.routes.user_management"
                                ".verify_recaptcha",
                                lambda x, y, z: False):
                         self.assertEqual(0, m.call_count)
@@ -110,7 +113,7 @@ class TestForgotRoute(_TestFramework):
                         )
                         self.assertEqual(0, m.call_count)
 
-            self.assertTrue(b"Invalid ReCaptcha Response" in resp.data)
+            self.assertTrue(b"ReCaptcha not solved correctly" in resp.data)
             self.assertTrue(b"<!--user_management/forgot.html-->" in resp.data)
             self.assertTrue(user.verify_password(password))
             self.assertFalse(user.verify_password("testpass"))

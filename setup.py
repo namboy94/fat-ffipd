@@ -44,7 +44,7 @@ if __name__ == "__main__":
             "werkzeug",
             "flask_sqlalchemy",
             "flask_login",
-            "puffotter",
+            "puffotter[flask,crypto]",
         ],
         include_package_data=True,
         zip_safe=False

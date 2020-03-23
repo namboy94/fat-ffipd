@@ -1,3 +1,5 @@
+V 0.3.0:
+  - Now uses puffotter flask module
 V 0.2.0:
   - Fixed issues with mysql timeouts
   - Added support for background tasks

@@ -34,7 +34,8 @@ class TestErrorHandling(_TestFramework):
 
         def render_template(*_, **__):
             print(1/0)
-        with patch("fat_ffipd.routes.static.render_template", render_template):
+        with patch("puffotter.flask.routes.static.render_template",
+                   render_template):
             resp = self.client.get("/", follow_redirects=True)
             with open("/tmp/index.html", "wb") as f:
                 f.write(resp.data)

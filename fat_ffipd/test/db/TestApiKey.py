@@ -18,8 +18,8 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import time
-from fat_ffipd.config import Config
-from fat_ffipd.db.ApiKey import ApiKey
+from puffotter.flask.db.ApiKey import ApiKey
+from puffotter.flask.Config import Config
 from fat_ffipd.test.TestFramework import _TestFramework
 
 
@@ -52,7 +52,6 @@ class TestApiKey(_TestFramework):
                 "creation_time": api_key.creation_time
             }
         )
-        self.assertEqual(user.__json__(True), user.__json__(False))
 
     def test_string_representation(self):
         """
@@ -65,7 +64,7 @@ class TestApiKey(_TestFramework):
         data.pop("id")
         self.assertEqual(
             str(api_key),
-            "ApiKey:{} <{}>".format(user.id, data)
+            "ApiKey:{} <{}>".format(api_key.id, data)
         )
 
     def test_repr(self):

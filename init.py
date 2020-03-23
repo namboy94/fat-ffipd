@@ -55,7 +55,13 @@ def main():
     copytree(".", temp_path)
     copytree(temp_path, target_path)
     rmtree(temp_path)
-    rmtree(os.path.join(target_path, ".git"))
+
+    for x in [".git", ".idea", "build", "dist", "fat_ffipd.egg-info"]:
+        path = os.path.join(target_path, x)
+        if os.path.isdir(path):
+            rmtree(path)
+        elif os.path.isfile(path):
+            os.remove(path)
 
     copyright_notice = "Copyright {} {} <{}>".format(
         args.copyright_year, args.author_name, args.author_email
@@ -91,7 +97,7 @@ def main():
                 "MYSQL_USER=\n"
                 "MYSQL_PASSWORD=\n"
                 "MYSQL_DATABASE=\n"
-                "MYSQL_SECRET=\n"
+                "FLASK_SECRET=\n"
                 "RECAPTCHA_SECRET_KEY=\n"
                 "RECAPTCHA_SITE_KEY=\n"
                 "SMTP_ADDRESS=\n"

@@ -17,25 +17,23 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import os
-from unittest import TestCase
-from fat_ffipd.run import app, init
+from typing import Type
+from puffotter.flask.Config import Config as BaseConfig
 
 
-class TestInitialization(TestCase):
+class Config(BaseConfig):
     """
-    Class that tests the initialization of the flask application
+    Configuration for the flask application
     """
 
-    def test_flask_secret(self):
+    @classmethod
+    def _load_extras(cls, parent: Type[BaseConfig]):
         """
-        Tests if the FLASK_SECRET variable is set correctly
+        Loads non-standard configuration variables
+        :param parent: The base configuration
         :return: None
         """
-        os.environ["FLASK_TESTING"] = "1"
-        os.environ["FLASK_SECRET"] = "ABC"
-        init()
-        self.assertEqual(app.secret_key, "ABC")
-        os.environ.pop("FLASK_SECRET")
-        init()
-        self.assertNotEqual(app.secret_key, "ABC")
+        parent.API_VERSION = "0"
+        parent.STRINGS.update({
+            "password_changed": "PaSsWoRd ChAnGeD SuCeSsFuLlY"
+        })
