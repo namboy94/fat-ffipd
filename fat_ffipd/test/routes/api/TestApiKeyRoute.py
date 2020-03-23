@@ -110,14 +110,13 @@ class TestApiKeyRoute(_TestFramework):
         api_key_obj, api_key, _ = self.generate_api_key(user)
 
         for params in [
-            {"api_key": "ABC", "expected": "API key does not exist"},
+            {"api_key": "ABC", "expected": "api key does not exist"},
             {"api_key": "{}:ABC".format(api_key_obj.id),
-             "expected": "API key not valid"}
+             "expected": "api key not valid"}
         ]:
             self.assertEqual(len(ApiKey.query.all()), 1)
 
             resp = self.client.delete("/api/v5/key", json=params)
-            print(self.app.url_map)
             self.assertEqual(resp.status_code, 401)
             data = json.loads(resp.data.decode("utf-8"))
             self.assertEqual(data["status"], "error")

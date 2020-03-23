@@ -39,7 +39,7 @@ class TestConfig(_TestFramework):
         self.assertEqual(resp.status_code, 401)
         data = json.loads(resp.data.decode("utf-8"))
         self.assertEqual(data["status"], "error")
-        self.assertEqual(data["reason"], "Unauthorized")
+        self.assertEqual(data["reason"], "unauthorized")
 
     def test_non_base64_header(self):
         """
@@ -56,7 +56,7 @@ class TestConfig(_TestFramework):
         self.assertEqual(resp.status_code, 401)
         data = json.loads(resp.data.decode("utf-8"))
         self.assertEqual(data["status"], "error")
-        self.assertEqual(data["reason"], "Unauthorized")
+        self.assertEqual(data["reason"], "unauthorized")
 
     def test_expired_api_key(self):
         """
@@ -76,7 +76,7 @@ class TestConfig(_TestFramework):
         self.assertEqual(resp.status_code, 401)
         data = json.loads(resp.data.decode("utf-8"))
         self.assertEqual(data["status"], "error")
-        self.assertEqual(data["reason"], "Unauthorized")
+        self.assertEqual(data["reason"], "unauthorized")
 
     def test_using_non_json_data(self):
         """
@@ -91,7 +91,7 @@ class TestConfig(_TestFramework):
         self.assertEqual(resp.status_code, 400)
         data = json.loads(resp.data.decode("utf-8"))
         self.assertEqual(data["status"], "error")
-        self.assertEqual(data["reason"], "Not in JSON format")
+        self.assertEqual(data["reason"], "not in json format")
 
     def test_random_exception(self):
         """
@@ -113,4 +113,4 @@ class TestConfig(_TestFramework):
             self.assertEqual(resp.status_code, 400)
             data = json.loads(resp.data.decode("utf-8"))
             self.assertEqual(data["status"], "error")
-            self.assertEqual(data["reason"], "Bad Request: KeyError")
+            self.assertEqual(data["reason"], "bad request: KeyError")
