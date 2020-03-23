@@ -17,16 +17,12 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import os
-from typing import List
-from flask.blueprints import Blueprint
 from puffotter.env import load_env_file
-from puffotter.flask.base import db
-from puffotter.flask.Config import Config
 from puffotter.flask.initialize import init_flask
 from puffotter.flask.wsgi import start_server
 from fat_ffipd import sentry_dsn, root_path
 from fat_ffipd.bg_tasks import bg_tasks
+from fat_ffipd.Config import Config
 
 
 def main():
