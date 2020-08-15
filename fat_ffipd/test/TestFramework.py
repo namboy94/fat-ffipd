@@ -17,10 +17,13 @@ You should have received a copy of the GNU General Public License
 along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-from fat_ffipd.main import root_path
-from puffotter.flask.test.TestFramework import \
-    _TestFramework as __TestFrameWork
+# noinspection PyProtectedMember
+from puffotter.flask.test.TestFramework import _TestFramework \
+    as __TestFrameWork
+from fat_ffipd import root_path
 from fat_ffipd.Config import Config
+from fat_ffipd.routes import blueprint_generators
+from fat_ffipd.db import models
 
 
 class _TestFramework(__TestFrameWork):
@@ -30,3 +33,5 @@ class _TestFramework(__TestFrameWork):
     module_name = "fat_ffipd"
     root_path = root_path
     config = Config
+    models = models
+    blueprint_generators = blueprint_generators

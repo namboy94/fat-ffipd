@@ -1,12 +1,12 @@
 # fat-ffipd
 
-Flask Application Template - For Fast Initial Project Develoment
+Flask Application Template - For Fast Initial Project Development
 
 |master|develop|
 |:----:|:-----:|
 |[![build status](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/badges/master/build.svg)](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/commits/master)|[![build status](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/badges/develop/build.svg)](https://gitlab.namibsun.net/namibsun/python/fat-ffipd/commits/develop)|
 
-![Logo](fat_ffipd/static/logo.png)
+![Logo](resources/logo-readme.png)
 
 fat-ffipd is a basic flask template that includes a basic authentication system
 wth API support, as well as a default layout that incorporates them.
@@ -36,6 +36,6 @@ application.
 * [Changelog](CHANGELOG)
 * [License (GPLv3)](LICENSE)
 * [Gitlab](https://gitlab.namibsun.net/namibsun/python/fat-ffipd)
-* [Github](namboy94/fat-ffipd)
+* [Github](https://github.com/namboy94/fat-ffipd)
 * [Progstats](https://progstats.namibsun.net/projects/fat-ffipd)
 * [PyPi](https://pypi.org/project/fat-ffipd)
