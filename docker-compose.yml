@@ -5,7 +5,8 @@ networks:
 services:
   app:
     build: .
-    image: "fat-ffipd-${DEPLOY_MODE}"
+    image: "fat-ffipd"
+    container_name: "fat-ffipd-app"
     depends_on:
       - db
     networks:
@@ -24,6 +25,7 @@ services:
     restart: always
   db:
     image: "mariadb:10.1"
+    container_name: "fat-ffipd-db"
     env_file: .env
     networks:
       - net
