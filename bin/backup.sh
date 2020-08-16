@@ -18,13 +18,13 @@
 
 set -e
 
-if [ "$#" -ne 3 ]; then
-    echo "Usage: backup.sh <app-container> <db-container> <backup-file>"
+if [ "$#" -ne 1 ]; then
+    echo "Usage: backup.sh <backup-file>"
 fi
 
-APP=$1
-DB=$2
-TARGET=$3
+APP="fat-ffipd-app"
+DB="fat-ffipd-db"
+TARGET=$1
 
 rm -rf backup
 mkdir backup
