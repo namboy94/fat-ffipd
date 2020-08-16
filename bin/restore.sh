@@ -29,8 +29,12 @@ TARGET=$1
 rm -rf backup .env
 tar xvf "$TARGET"
 cp backup/.env .env
+docker-compose down
+docker-compose up -d
 docker stop "$APP"
+sleep 20
+
 docker exec -i "$DB" bash -c 'mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -e "DROP DATABASE $MYSQL_DATABASE; CREATE DATABASE $MYSQL_DATABASE"'
 docker exec -i "$DB" bash -c 'mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE' < backup/db.sql
-docker start "$APP"
+docker-compose up -d
 rm -rf backup
