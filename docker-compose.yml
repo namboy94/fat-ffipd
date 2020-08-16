@@ -21,7 +21,7 @@ services:
       - MYSQL_HOST=db
       - MYSQL_PORT=3306
       - LOGGING_PATH=/var/logs/fat_ffipd.log
-      - FLASK_PORT=8000
+      - HTTP_PORT=8000
     restart: always
   db:
     image: "mariadb:10.1"

@@ -9,6 +9,12 @@ RUN apt update && \
 
 ADD . flask-app
 RUN cd flask-app && python3 setup.py install
+
+RUN apt install git -y && \
+    git clone https://gitlab.namibsun.net/namibsun/python/puffotter.git -b develop && \
+    cd puffotter && \
+    pip3 install .[flask]
+
 WORKDIR flask-app
 EXPOSE 8000
 CMD ["/usr/bin/python3", "server.py"]

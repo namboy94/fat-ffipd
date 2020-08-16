@@ -64,6 +64,32 @@ along with fat-ffipd.  If not, see <http://www.gnu.org/licenses/>.
 
     <hr>
 
+    <h2>Register Telegram Chat ID</h2>
+    <p>
+        To use Telegram functionality, you need to know your Telegram Chat ID.
+        To get your chat ID, send a message to
+        <a href="TODO">the Telegram bot</a>
+        with the content "/whoami".
+    </p>
+
+    <div class="container form-container">
+        <form method="post" action="{{ url_for('user_management.register_telegram') }}">
+            <div class="form-group">
+                <label for="telegram_chat_id_input">Telegram Chat ID</label>
+                <input class="form-control"
+                       type="text"
+                       autocomplete="on"
+                       id="telegram_chat_id_input"
+                       aria-label="{{ site_name }}"
+                       value="{{ '' if telegram_chat_id is none else telegram_chat_id.chat_id }}"
+                       name="telegram_chat_id">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <hr>
+
     <h2>Delete Account</h2>
 
     <div class="container form-container">
