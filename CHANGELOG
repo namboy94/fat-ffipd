@@ -1,3 +1,6 @@
+V 0.4.0:
+  - Integrated telegram functionality
+  - Added backup and restore scripts
 V 0.3.3:
   - Stopped using development version for develop branch
 V 0.3.2:

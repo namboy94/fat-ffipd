@@ -63,7 +63,6 @@ deploy_app:
   before_script: []
   script:
     - echo "$ENV_FILE" > .env
-    - export HTTP_PORT=$PROD_HTTP_PORT
     - docker-compose build
     - docker-compose up -d
     - rm .env
