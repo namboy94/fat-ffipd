@@ -1,3 +1,6 @@
+V 0.4.2:
+  - Fixed Telegram Bot URL
+  - Backup before deploying
 V 0.4.1:
   - Fixed missing mariadb root password from backup
 V 0.4.0:

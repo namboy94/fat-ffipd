@@ -18,21 +18,22 @@
 
 set -e
 
-if [ "$#" -ne 3 ]; then
-    echo "Usage: backup.sh <app-container> <db-container> <backup-file>"
+if [ "$#" -ne 1 ]; then
+    echo "Usage: restore.sh <backup-file>"
 fi
 
-APP=$1
-DB=$2
-TARGET=$3
+APP="fat-ffipd-app"
+DB="fat-ffipd-db"
+TARGET=$1
 
 rm -rf backup .env
 tar xvf "$TARGET"
 cp backup/.env .env
 docker-compose down
 docker-compose up -d
-sleep 20
 docker stop "$APP"
+sleep 20
+
 docker exec -i "$DB" bash -c 'mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -e "DROP DATABASE $MYSQL_DATABASE; CREATE DATABASE $MYSQL_DATABASE"'
 docker exec -i "$DB" bash -c 'mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE' < backup/db.sql
 docker-compose up -d
