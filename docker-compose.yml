@@ -31,6 +31,8 @@ services:
       - net
     volumes:
       - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
     restart: always
 volumes:
   logs: ~
